@@ -4,11 +4,11 @@ from pathlib import Path
 
 def askMode():
     return input(
-        "Do you want to generate a Password list (1), use an existing Password list (2) or BruteForce without Password List? (3) Please enter: (1/2/3) ")
+        "Enter (1) to generate a Password List, (2) to use an existing Password List or (3) to BruteForce without Password List. Please enter: (1/2/3) ")
 
 
 def getPasswordListFromExpression():
-    expression = input("Regex Epression for Password Definition: ")
+    expression = input("Regex Expression for Password Definition: ")
     print("Generating Password-List...")
     return list(exrex.generate(expression))
 
@@ -24,7 +24,7 @@ def dictionaryAttack(passwordList, offset):
     with open(passwordList, 'r') as passwordList:
         lines = passwordList.readlines()
         fileName = getFile();
-        if (getFileExtension(fileName) == ".zip"):
+        if getFileExtension(fileName) == ".zip":
             zipFile = zipfile.ZipFile(fileName)
             for i in range(offset, len(lines)):
                 password = lines[i].strip('\n')
@@ -36,7 +36,7 @@ def dictionaryAttack(passwordList, offset):
                 except:
                     print("Trying next password...")
                     pass
-        elif (getFileExtension(fileName) == ".rar"):
+        elif getFileExtension(fileName) == ".rar":
             rarFile = rarfile.RarFile(fileName)
             for i in range(offset, len(lines)):
                 password = lines[i].strip('\n')
@@ -50,7 +50,7 @@ def dictionaryAttack(passwordList, offset):
                     pass
 def bruteforce():
     fileName = getFile();
-    if (getFileExtension(fileName) == ".zip"):
+    if getFileExtension(fileName) == ".zip":
         zipFile = zipfile.ZipFile(fileName)
         passwordList = getPasswordListFromExpression()
         for password in passwordList:
@@ -63,7 +63,7 @@ def bruteforce():
             except:
                 print("Trying next password...")
                 pass
-    elif (getFileExtension(fileName) == ".rar"):
+    elif getFileExtension(fileName) == ".rar":
         rarFile = rarfile.RarFile(fileName)
         passwordList = getPasswordListFromExpression()
         for password in passwordList:
@@ -85,15 +85,15 @@ def getFileExtension(name):
 
 def main():
     mode = askMode()
-    if (mode == "1"):
+    if mode == "1":
         print("*** Password-List Generation ***")
         writePasswordList(getPasswordListFromExpression())
-    elif (mode == "2"):
+    elif mode == "2":
         print("*** Dictionary Attack **")
         passwordList = input("Please enter Path to Password-List: ")
         offset = input("Please enter Password-List offset: ")
         dictionaryAttack(passwordList, int(offset))
-    elif (mode == "3"):
+    elif mode == "3":
         print("*** BruteForce Attack **")
         bruteforce()
     else:
